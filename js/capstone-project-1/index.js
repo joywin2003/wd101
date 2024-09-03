@@ -25,10 +25,6 @@ password.addEventListener("input", () => {
   validate(password, "Password is required.");
 });
 
-acceptTerms.addEventListener("input", () => {
-  validate(acceptTerms, "Please accept the terms and conditions.");
-});
-
 const today = new Date();
 const minAge = 18;
 const maxAge = 55;
@@ -44,27 +40,33 @@ const maxDate = new Date(
   today.getDate()
 );
 
-const dobValue = new Date(dob.value);
 const dobInput = document.getElementById("dob");
 const formatDate = (date) => date.toISOString().split("T")[0];
 dobInput.setAttribute("min", formatDate(minDate));
 dobInput.setAttribute("max", formatDate(maxDate));
 
-dob.addEventListener("input", () => {
+dobInput.addEventListener("input", () => {
+  console.log(new Date(dob.value), new Date(minDate));
   if (dob.value === "") {
-    dob.setCustomValidity("Date of birth is required.");
-  } else if (dobValue < minDate || dobValue > maxDate) {
-    dob.setCustomValidity(
-      `Date of birth must be between ${minAge} and ${maxAge} years old.`
-    );
+    dobInput.setCustomValidity("Date of birth is required.");
+  } else if (
+    new Date(dob.value) < new Date(minDate) ||
+    new Date(dob.value) > new Date(maxDate)
+  ) {
+    dobInput.setCustomValidity(`Date of birth must be between 18 and 55.`);
   } else {
-    dob.setCustomValidity("");
+    dobInput.setCustomValidity("");
   }
 });
 
 document.getElementById("user-form").addEventListener("submit", function (e) {
   e.preventDefault();
-
+  if (!acceptTerms.checked) {
+    acceptTerms.setCustomValidity("You must accept the terms and conditions.");
+  } else {
+    acceptTerms.setCustomValidity("");
+  }
+  acceptTerms.reportValidity();
   if (document.getElementById("user-form").checkValidity()) {
     console.log("Form submitted successfully!");
   } else {
