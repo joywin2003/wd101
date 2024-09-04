@@ -69,9 +69,38 @@ acceptTerms.addEventListener("input", () => {
   acceptTerms.reportValidity();
 });
 
-userEntries = [];
+const retrieveUserEntries = () => {
+  const userEntries = localStorage.getItem("user-entries");
+  let entries = [];
+  if (userEntries) {
+    console.log(JSON.parse(userEntries));
+    entries = JSON.parse(userEntries);
+  } else {
+    console.log("No user entries found.");
+  }
+  return entries;
+};
 
-document.getElementById("user-form").addEventListener("submit", function (e) {
+userEntries = retrieveUserEntries();
+
+const displayUserEntries = () => {
+    let table = document.getElementById("user-entries-table");
+    table.innerHTML = "";
+    userEntries.forEach((entry, index) => {
+        let row = table.insertRow();
+        let nameCell = row.insertCell(0);
+        let emailCell = row.insertCell(1);
+        let dobCell = row.insertCell(2);
+        let acceptTermsCell = row.insertCell(3);
+    
+        nameCell.innerHTML = entry.name;
+        emailCell.innerHTML = entry.email;
+        dobCell.innerHTML = entry.dob;
+        acceptTermsCell.innerHTML = entry.acceptTerms ? "Yes" : "No";
+    });
+    };
+
+const submitForm = (e) => {
   e.preventDefault();
 
   if (!acceptTerms.checked) {
@@ -98,4 +127,7 @@ document.getElementById("user-form").addEventListener("submit", function (e) {
   } else {
     console.log("Form not submitted successfully!");
   }
-});
+};
+
+document.getElementById("user-form").addEventListener("submit", submitForm);
+displayUserEntries();
