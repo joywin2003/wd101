@@ -83,22 +83,29 @@ const retrieveUserEntries = () => {
 
 userEntries = retrieveUserEntries();
 
+const addRowEntry = (entry) => {
+  let nameCell = `<td class="border border-gray-900 px-4 py-2">${entry.name}</td>`;
+  let emailCell = `<td class="border border-gray-900 px-4 py-2">${entry.email}</td>`;
+  let passwordCell = `<td class="border border-gray-900 px-4 py-2">${entry.password}</td>`;
+  let dobCell = `<td class="border border-gray-900 px-4 py-2">${entry.dob}</td>`;
+  let acceptTermsCell = `<td class="border px-4 py-2 border-gray-900">${
+    entry.acceptTerms ? "Yes" : "No"
+  }</td>`;
+
+  let row = `<tr>${nameCell}${emailCell}${passwordCell}${dobCell}${acceptTermsCell}</tr>`;
+  let tableRow = document.createElement("tr");
+  tableRow.innerHTML = row;
+  document.querySelector("table").appendChild(tableRow);
+};
+
 const displayUserEntries = () => {
-    let table = document.getElementById("user-entries-table");
-    table.innerHTML = "";
-    userEntries.forEach((entry, index) => {
-        let row = table.insertRow();
-        let nameCell = row.insertCell(0);
-        let emailCell = row.insertCell(1);
-        let dobCell = row.insertCell(2);
-        let acceptTermsCell = row.insertCell(3);
-    
-        nameCell.innerHTML = entry.name;
-        emailCell.innerHTML = entry.email;
-        dobCell.innerHTML = entry.dob;
-        acceptTermsCell.innerHTML = entry.acceptTerms ? "Yes" : "No";
-    });
-    };
+  let table = document.getElementById("user-entries-table");
+  console.log(1);
+  table.innerHTML = "";
+  userEntries.map((entry, index) => {
+    addRowEntry(entry);
+  });
+};
 
 const submitForm = (e) => {
   e.preventDefault();
@@ -110,7 +117,7 @@ const submitForm = (e) => {
   }
   acceptTerms.reportValidity();
 
-  if (this.checkValidity()) {
+  if (e.target.checkValidity()) {
     const entryDetails = {
       name: name.value,
       email: email.value,
@@ -123,7 +130,9 @@ const submitForm = (e) => {
 
     console.log(userEntries);
     localStorage.setItem("user-entries", JSON.stringify(userEntries));
+    addRowEntry(entryDetails);
     console.log("Form submitted successfully!");
+    
   } else {
     console.log("Form not submitted successfully!");
   }
