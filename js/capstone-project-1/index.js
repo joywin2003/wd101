@@ -69,6 +69,8 @@ acceptTerms.addEventListener("input", () => {
   acceptTerms.reportValidity();
 });
 
+userEntries = [];
+
 document.getElementById("user-form").addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -80,6 +82,18 @@ document.getElementById("user-form").addEventListener("submit", function (e) {
   acceptTerms.reportValidity();
 
   if (this.checkValidity()) {
+    const entryDetails = {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+      dob: dob.value,
+      acceptTerms: acceptTerms.checked,
+    };
+
+    userEntries.push(entryDetails);
+
+    console.log(userEntries);
+    localStorage.setItem("user-entries", JSON.stringify(userEntries));
     console.log("Form submitted successfully!");
   } else {
     console.log("Form not submitted successfully!");
