@@ -89,7 +89,7 @@ const addRowEntry = (entry) => {
   let passwordCell = `<td class="border border-gray-900 px-4 py-2">${entry.password}</td>`;
   let dobCell = `<td class="border border-gray-900 px-4 py-2">${entry.dob}</td>`;
   let acceptTermsCell = `<td class="border px-4 py-2 border-gray-900">${
-    entry.acceptTerms ? "Yes" : "No"
+    entry.acceptTerms ? "true" : "false"
   }</td>`;
 
   let row = `<tr>${nameCell}${emailCell}${passwordCell}${dobCell}${acceptTermsCell}</tr>`;
